@@ -1,0 +1,9 @@
+{
+    "dependencies":[
+        "."
+    ],
+    "graphs":{
+        "router": "./studio_graph.py:graph"
+    },
+    "env":".env"
+}
