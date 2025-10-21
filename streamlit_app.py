@@ -1,23 +1,23 @@
 """
 Streamlit App for Dynamic LLM Routing using LangGraph
 """
-
+import os
+import sys
 import streamlit as st
 import time
 import pandas as pd
 from io import StringIO
+
+# add core and config to path for imports
+sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from core import SemanticCache
+from core import Router
 from config import *
 
-# Import modules
-try:
-    from semantic_cache import SemanticCache
-    from langgraph_router import Router
-except ImportError as e:
-    st.error(f"Import error: {e}")
-    st.stop()
+# Model configuration
+MODELS_CONFIG=MODELS_CONFIG
 
-# Model configuration (tiers)
-MODELS_CONFIG =MODELS_CONFIG
 
 class SimpleCache:
     """Basic cache fallback"""

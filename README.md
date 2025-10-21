@@ -163,37 +163,54 @@ Actual Complex (250 queries):
 ```
 Dynamic-LLM-Routing-System/
 │
-├── BERT_LAST_V.ipynb           # Jupyter notebook for BERT experiments
-├── classifier.py               # Classifier logic
-├── config.py                   # Configuration settings
+├── BERT_LAST_V.ipynb           # Jupyter notebook for BERT model training & experiments
+├── main.py                     # Main entry point for the application
+├── streamlit_app.py            # Streamlit web UI for interactive query routing
+├── test_suite.py               # Comprehensive test suite for system evaluation
 ├── environment.yml             # Conda environment dependencies
-├── fallback.py                 # Fallback logic for routing
-├── langgraph_router.py         # Main routing logic using LangGraph
-├── logger_config.py            # Logger configuration
-├── main.py                     # Main entry point
-├── README.md                   # Project documentation
-├── semantic_cache.json         # Cached semantic data
-├── semantic_cache.py           # Semantic cache logic
-├── streamlit_app.py            # Streamlit web app
-├── test_results.xlsx           # Test results (Excel)
-├── test_suite.py               # Test suite for the project
+├── README.md                   # Project documentation (this file)
 │
-├── assets/                     # Images and assets for documentation
-│   ├── LangGraph.jpeg
-│   ├── LangGraph1.jpeg
-│   ├── LLM_Router_Flowchart.png
-│   └── ...
+├── core/                       # Core system components
+│   ├── __init__.py             # Package initialization
+│   ├── classifier.py           # Query complexity classification logic
+│   ├── fallback.py             # Model fallback and retry mechanisms
+│   ├── langgraph_router.py     # LangGraph-based routing workflow
+│   └── semantic_cache.py       # Semantic caching with similarity matching
 │
-├── run_doc/                    # Run documentation screenshots
+├── config/                     # Configuration management
+│   ├── __init__.py             # Package initialization
+│   ├── config.py               # Model tiers & system configuration
+│   └── logger_config.py        # Logging configuration
+│
+├── best_model/                 # Fine-tuned BERT classifier model
+│   ├── config.json             # Model configuration
+│   ├── model.safetensors       # Model weights (267MB)
+│   ├── tokenizer.json          # Tokenizer vocabulary
+│   ├── tokenizer_config.json   # Tokenizer configuration
+│   ├── special_tokens_map.json # Special tokens mapping
+│   └── vocab.txt               # Vocabulary file
+│
+├── LangSmith_Studio/           # LangGraph Studio development environment
+│   ├── langgraph.json          # Studio configuration
+│   ├── studio_graph.py         # Studio-specific graph implementation
+│   ├── semantic_cache.json     # Cached semantic query results
+│   ├── .env                    # Environment variables (API keys)
+│   └── .langgraph_api/         # Studio API cache
+│
+├── assets/                     # Documentation images and diagrams
+│   ├── LangGraph.jpeg          # LangGraph workflow visualization
+│   ├── LangGraph1.jpeg         # Alternative workflow view
+│   ├── LLM_Router_Flowchart.png # System flowchart diagram
+│   ├── streamlit1.jpeg         # Streamlit UI screenshots
+│   ├── streamlit2.jpeg
+│   └── streamlit3.jpeg
+│
+├── run_doc/                    # Runtime documentation and screenshots
 │   ├── Chat_Langgraph_studio.png
 │   ├── Graph_Langgraph_studio.png
 │   └── ...
 │
-└── studio/                     # Studio-related files and cache
-  ├── langgraph.json
-  ├── semantic_cache.json
-  ├── studio_graph.py
-  └── __pycache__/
+└── cach_results/               # Cached query results for testing
 
 ```
 

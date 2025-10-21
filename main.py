@@ -1,8 +1,14 @@
 '''
 Main application for dynamic LLM routing using LangGraph
 '''
-from semantic_cache import SemanticCache
-from langgraph_router import Router
+import os
+import sys
+
+# add core and config to path for imports
+sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from core import SemanticCache
+from core import Router
 from config import *
 
 # Model configuration

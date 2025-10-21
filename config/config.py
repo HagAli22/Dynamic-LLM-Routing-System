@@ -2,12 +2,14 @@ import os
 import sys
 from typing import Dict, List
 from enum import Enum
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# add core to path for imports
+sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-from classifier import classify_text
-from fallback import FallbackChatGradientAI
-from semantic_cache import SemanticCache
+from core import classify_text
+from core import FallbackChatGradientAI
+from core import SemanticCache
 
 MODELS_CONFIG = {
     "tier1": [

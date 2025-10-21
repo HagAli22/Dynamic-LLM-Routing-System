@@ -1,10 +1,18 @@
+import os
+import sys
+
+# add core and config to path for imports
+sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import pandas as pd
-from semantic_cache import SemanticCache
-from classifier import classify_text
-from fallback import FallbackChatGradientAI
+from core import SemanticCache
+from core import Router
+from core import classify_text
+from core import FallbackChatGradientAI
+from config import *
 import time
 
-from config import MODELS_CONFIG
+# from config.config import MODELS_CONFIG
 
 class TestSuite:
     def __init__(self,MODELS_CONFIG):
