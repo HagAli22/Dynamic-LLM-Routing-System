@@ -101,13 +101,15 @@ class Router:
                 return state
 
             classification = self.classifier.classify_text(state["query"])
+            classification = classification.strip().upper()
+            
 
             if classification not in ["S", "M", "A"]:
+                print(f"[WARNING] Invalid classification result: {classification}")
                 state["error"] = f"Invalid classification: {classification}"
                 return state
 
             logger.debug(f"Query classified as: {classification}")
-            print(f"[DEBUG] Query classified as: {classification}")
             return {**state, "classification": classification, "error": None}
 
         except Exception as e:

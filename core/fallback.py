@@ -2,6 +2,7 @@ import os
 import time
 import requests
 from dotenv import load_dotenv
+from google import genai
 
 # Load env vars
 load_dotenv()
@@ -48,7 +49,6 @@ class FallbackChatGradientAI:
 
     def __init__(self, models: list[str]):
         self.models = models
-        self.base_url = "https://openrouter.ai/api/v1/chat/completions"
 
     def invoke(self, prompt: str, max_retries: int = 3):
         """Send prompt, fallback if model fails"""
@@ -62,50 +62,54 @@ class FallbackChatGradientAI:
                 model_name = model_name[1]  # Use the model identifier
             print("model_name",model_name)
             api_key_name = MODEL_KEY_MAP.get(model_name)
+            print("api_key_name",api_key_name)
             api_key = os.getenv(api_key_name)
+            print("api",api_key_name, api_key)
 
             if not api_key:
+                print(f"[WARNING] API key for model '{model_name}' not found. Skipping this model.")
                 continue  # Skip if no key
+            
+            client = genai.Client(api_key=api_key)
+            print("client Done")
+            
 
-            headers = {
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            }
-
-            payload = {
-                "model": model_name,
-                "messages": [{"role": "user", "content": prompt}],
-            }
+            
 
             for attempt in range(max_retries):
                 try:
                     start_time = time.time()
-                    response = requests.post(self.base_url, headers=headers, json=payload)
-
-                    if response.status_code == 200:
-                        result = response.json()
-                        choice = result["choices"][0]["message"]["content"]
-
-                        usage = result.get("usage", {})
-                        input_tokens = usage.get("prompt_tokens", 0)
-                        output_tokens = usage.get("completion_tokens", 0)
-
-                        cost = calculate_cost(model_name, input_tokens, output_tokens)
-                        end_time = time.time()
-
-                        return {
-                            "model": model_name,
-                            "response": choice,
-                            "input_tokens": input_tokens,
-                            "output_tokens": output_tokens,
-                            "cost": cost,
-                            "time_taken": end_time - start_time,
+                    response = client.models.generate_content(
+                        model="gemma-3-27b-it",
+                        contents=prompt,
+                        config={
+                            "temperature": 0.7,
+                            "max_output_tokens": 1024,
                         }
+                    )
+                    end_time = time.time()
 
-                    else:
-                        last_exception = Exception(
-                            f"Error {response.status_code}: {response.text}"
-                        )
+                    result = response.text
+
+                    usage = response.usage_metadata
+                    
+                    input_tokens = usage.prompt_token_count or 0
+
+                    output_tokens = usage.candidates_token_count or 0
+
+                    cost = calculate_cost(model_name, input_tokens, output_tokens)
+                    end_time = time.time()
+
+                    return {
+                        "model": model_name,
+                        "response": result,
+                        "input_tokens": input_tokens,
+                        "output_tokens": output_tokens,
+                        "cost": cost,
+                        "time_taken": end_time - start_time,
+                    }
+
+                    
 
                 except Exception as e:
                     last_exception = e

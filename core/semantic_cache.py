@@ -12,7 +12,7 @@ class SemanticCache:
     Stores queries and responses with TTL.
     """
 
-    def __init__(self, cache_file="semantic_cache.json", threshold=0.50, default_ttl=3600):
+    def __init__(self, cache_file="semantic_cache.json", threshold=0.90, default_ttl=3600):
         self.cache_file = cache_file
         self.threshold = threshold
         self.default_ttl = default_ttl

@@ -46,6 +46,8 @@ best_model/
 .DS_Store
 .idea/
 
+*.pdf
+
 
 ## API keys
 *.env
