@@ -83,6 +83,56 @@ def setup_logger(name: str = "llm_router", level: str = "INFO") -> logging.Logge
     return logger
 
 
+def setup_test_logger(
+    name: str = "llm_router.test_suite",
+    level: str = "INFO",
+    log_dir: str = "test_results",
+    log_filename: str = "test_suite.log",
+) -> logging.Logger:
+    """Setup dedicated logger for test suite results."""
+    logger = logging.getLogger(name)
+
+    if logger.handlers:
+        return logger
+
+    log_levels = {
+        "DEBUG": logging.DEBUG,
+        "INFO": logging.INFO,
+        "WARNING": logging.WARNING,
+        "ERROR": logging.ERROR,
+        "CRITICAL": logging.CRITICAL,
+    }
+
+    logger.setLevel(log_levels.get(level.upper(), logging.INFO))
+
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    log_format = logging.Formatter(
+        fmt="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+
+    file_handler = RotatingFileHandler(
+        filename=os.path.join(log_dir, log_filename),
+        maxBytes=10 * 1024 * 1024,
+        backupCount=3,
+        encoding="utf-8",
+    )
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(log_format)
+    logger.addHandler(file_handler)
+
+    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler.setLevel(logging.INFO)
+    stream_handler.setFormatter(log_format)
+    logger.addHandler(stream_handler)
+
+    logger.info("Test suite logger initialized")
+
+    return logger
+
+
 # Test example
 if __name__ == "__main__":
     logger = setup_logger("test")

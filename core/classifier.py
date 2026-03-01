@@ -1,9 +1,12 @@
 import os
 import sys
+import logging
 
 # Add parent directory to path to import llm_utils
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from llm_utils import get_llm_client
+
+logger = logging.getLogger("llm_router.classifier")
 
 
 def classify_text(text):
@@ -83,13 +86,9 @@ def classify_text(text):
 
     result = client.generate(test_prompt, max_tokens=50, temperature=0.5)
     if result and not result.startswith("# Generated code placeholder"):
-        print("[OK] API Response received!")
-        print("-" * 40)
-        print(result)
-        print("-" * 40)
+        logger.debug("Classifier API response received")
         return result
     else:
-        print("[X] API returned empty response")
-        print("    Make sure the required library is installed")
+        logger.warning("Classifier API returned empty response")
         return "No response"
     

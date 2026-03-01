@@ -1,0 +1,176 @@
+2026-03-02 00:53:54 | llm_router.test_suite | INFO | Test suite logger initialized
+2026-03-02 00:53:56 | llm_router.test_suite | INFO | TestSuite initialized with tiers={'tier1': 3, 'tier2': 3, 'tier3': 3}
+2026-03-02 00:53:56 | llm_router.test_suite | INFO | Processing query: Give me a one-sentence explanation of photosynthesis.
+2026-03-02 00:53:56 | llm_router.test_suite | INFO | [qid=0c8a14bd] Starting test for query: Give me a one-sentence explanation of photosynthesis.
+2026-03-02 00:53:56 | llm_router.test_suite | INFO | [qid=0c8a14bd] Checking semantic cache
+2026-03-02 00:53:56 | llm_router.test_suite | INFO | [qid=0c8a14bd] Cache miss
+2026-03-02 00:54:00 | llm_router.test_suite | INFO | [qid=0c8a14bd] Classification result: S
+2026-03-02 00:54:00 | llm_router.test_suite | INFO | [qid=0c8a14bd] Route selected: S
+2026-03-02 00:54:00 | llm_router.test_suite | INFO | [qid=0c8a14bd] Candidate models prepared: 3
+2026-03-02 00:54:02 | llm_router.test_suite | INFO | [qid=0c8a14bd] Model invocation done (used_model=meta-llama/llama-3.3-8b-instruct:free, speed=5.54s)
+2026-03-02 00:54:02 | llm_router.test_suite | INFO | [qid=0c8a14bd] Response cached
+2026-03-02 00:54:02 | llm_router.test_suite | INFO | [qid=0c8a14bd] Result saved (route=S, model=meta-llama/llama-3.3-8b-instruct:free, cache=Miss, speed=5.54s)
+2026-03-02 00:54:02 | llm_router.test_suite | INFO | [qid=0c8a14bd] Finished test (error=False)
+2026-03-02 00:54:02 | llm_router.test_suite | INFO | Processing query: Who wrote the play 'Hamlet'?
+2026-03-02 00:54:02 | llm_router.test_suite | INFO | [qid=b9371225] Starting test for query: Who wrote the play 'Hamlet'?
+2026-03-02 00:54:02 | llm_router.test_suite | INFO | [qid=b9371225] Checking semantic cache
+2026-03-02 00:54:02 | llm_router.test_suite | INFO | [qid=b9371225] Cache miss
+2026-03-02 00:54:03 | llm_router.test_suite | INFO | [qid=b9371225] Classification result: S
+2026-03-02 00:54:03 | llm_router.test_suite | INFO | [qid=b9371225] Route selected: S
+2026-03-02 00:54:03 | llm_router.test_suite | INFO | [qid=b9371225] Candidate models prepared: 3
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=b9371225] Model invocation done (used_model=meta-llama/llama-3.3-8b-instruct:free, speed=3.62s)
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=b9371225] Response cached
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=b9371225] Result saved (route=S, model=meta-llama/llama-3.3-8b-instruct:free, cache=Miss, speed=3.62s)
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=b9371225] Finished test (error=False)
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | Processing query: Translate 'Thank you' into Japanese.
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=cb011771] Starting test for query: Translate 'Thank you' into Japanese.
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=cb011771] Checking semantic cache
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=cb011771] Cache miss
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=cb011771] Classification result: S
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=cb011771] Route selected: S
+2026-03-02 00:54:06 | llm_router.test_suite | INFO | [qid=cb011771] Candidate models prepared: 3
+2026-03-02 00:54:13 | llm_router.test_suite | INFO | [qid=cb011771] Model invocation done (used_model=meta-llama/llama-3.3-8b-instruct:free, speed=7.13s)
+2026-03-02 00:54:13 | llm_router.test_suite | INFO | [qid=cb011771] Response cached
+2026-03-02 00:54:13 | llm_router.test_suite | INFO | [qid=cb011771] Result saved (route=S, model=meta-llama/llama-3.3-8b-instruct:free, cache=Miss, speed=7.13s)
+2026-03-02 00:54:13 | llm_router.test_suite | INFO | [qid=cb011771] Finished test (error=False)
+2026-03-02 00:54:13 | llm_router.test_suite | INFO | Processing query: Draft a formal apology email to a client for a missed deadline.
+2026-03-02 00:54:13 | llm_router.test_suite | INFO | [qid=98c92be2] Starting test for query: Draft a formal apology email to a client for a missed deadline.
+2026-03-02 00:54:13 | llm_router.test_suite | INFO | [qid=98c92be2] Checking semantic cache
+2026-03-02 00:54:13 | llm_router.test_suite | INFO | [qid=98c92be2] Cache miss
+2026-03-02 00:54:14 | llm_router.test_suite | INFO | [qid=98c92be2] Classification result: M
+2026-03-02 00:54:14 | llm_router.test_suite | INFO | [qid=98c92be2] Route selected: M
+2026-03-02 00:54:14 | llm_router.test_suite | INFO | [qid=98c92be2] Candidate models prepared: 3
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=98c92be2] Model invocation done (used_model=openai/gpt-oss-20b:free, speed=21.70s)
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=98c92be2] Response cached
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=98c92be2] Result saved (route=M, model=openai/gpt-oss-20b:free, cache=Miss, speed=21.70s)
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=98c92be2] Finished test (error=False)
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | Processing query: Give me a one-sentence explanation of photosynthesis.
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=b5d0c1a2] Starting test for query: Give me a one-sentence explanation of photosynthesis.
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=b5d0c1a2] Checking semantic cache
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=b5d0c1a2] Cache hit
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=b5d0c1a2] Result saved (route=cache, model=cache, cache=Hit, speed=0.10s)
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=b5d0c1a2] Finished test (error=False)
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | Processing query: Explain quantum computing as if I am 10 years old.
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=1b82b9cd] Starting test for query: Explain quantum computing as if I am 10 years old.
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=1b82b9cd] Checking semantic cache
+2026-03-02 00:54:34 | llm_router.test_suite | INFO | [qid=1b82b9cd] Cache miss
+2026-03-02 00:54:37 | llm_router.test_suite | INFO | [qid=1b82b9cd] Classification result: M
+2026-03-02 00:54:37 | llm_router.test_suite | INFO | [qid=1b82b9cd] Route selected: M
+2026-03-02 00:54:37 | llm_router.test_suite | INFO | [qid=1b82b9cd] Candidate models prepared: 3
+2026-03-02 00:54:50 | llm_router.test_suite | INFO | [qid=1b82b9cd] Model invocation done (used_model=openai/gpt-oss-20b:free, speed=15.93s)
+2026-03-02 00:54:50 | llm_router.test_suite | INFO | [qid=1b82b9cd] Response cached
+2026-03-02 00:54:50 | llm_router.test_suite | INFO | [qid=1b82b9cd] Result saved (route=M, model=openai/gpt-oss-20b:free, cache=Miss, speed=15.93s)
+2026-03-02 00:54:50 | llm_router.test_suite | INFO | [qid=1b82b9cd] Finished test (error=False)
+2026-03-02 00:54:50 | llm_router.test_suite | INFO | Processing query: Create a Java class for managing a library system with books and members.
+2026-03-02 00:54:50 | llm_router.test_suite | INFO | [qid=94488557] Starting test for query: Create a Java class for managing a library system with books and members.
+2026-03-02 00:54:50 | llm_router.test_suite | INFO | [qid=94488557] Checking semantic cache
+2026-03-02 00:54:50 | llm_router.test_suite | INFO | [qid=94488557] Cache miss
+2026-03-02 00:54:51 | llm_router.test_suite | INFO | [qid=94488557] Classification result: A
+2026-03-02 00:54:51 | llm_router.test_suite | INFO | [qid=94488557] Route selected: A
+2026-03-02 00:54:51 | llm_router.test_suite | INFO | [qid=94488557] Candidate models prepared: 3
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=94488557] Model invocation done (used_model=qwen/qwen-2.5-coder-32b-instruct:free, speed=20.81s)
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=94488557] Response cached
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=94488557] Result saved (route=A, model=qwen/qwen-2.5-coder-32b-instruct:free, cache=Miss, speed=20.81s)
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=94488557] Finished test (error=False)
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | Processing query: Who wrote the play 'Hamlet'?
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=ba7d0f9c] Starting test for query: Who wrote the play 'Hamlet'?
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=ba7d0f9c] Checking semantic cache
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=ba7d0f9c] Cache hit
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=ba7d0f9c] Result saved (route=cache, model=cache, cache=Hit, speed=0.10s)
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=ba7d0f9c] Finished test (error=False)
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | Processing query: Refactor this Python function to improve readability and performance: def f(a): return [x for x in a if x%2==0]
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=a5708a88] Starting test for query: Refactor this Python function to improve readability and performance: def f(a): return [x for x in a if x%2==0]
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=a5708a88] Checking semantic cache
+2026-03-02 00:55:11 | llm_router.test_suite | INFO | [qid=a5708a88] Cache miss
+2026-03-02 00:55:12 | llm_router.test_suite | INFO | [qid=a5708a88] Classification result: A
+2026-03-02 00:55:12 | llm_router.test_suite | INFO | [qid=a5708a88] Route selected: A
+2026-03-02 00:55:12 | llm_router.test_suite | INFO | [qid=a5708a88] Candidate models prepared: 3
+2026-03-02 00:55:27 | llm_router.test_suite | INFO | [qid=a5708a88] Model invocation done (used_model=qwen/qwen-2.5-coder-32b-instruct:free, speed=16.16s)
+2026-03-02 00:55:27 | llm_router.test_suite | INFO | [qid=a5708a88] Response cached
+2026-03-02 00:55:27 | llm_router.test_suite | INFO | [qid=a5708a88] Result saved (route=A, model=qwen/qwen-2.5-coder-32b-instruct:free, cache=Miss, speed=16.16s)
+2026-03-02 00:55:27 | llm_router.test_suite | INFO | [qid=a5708a88] Finished test (error=False)
+2026-03-02 00:55:27 | llm_router.test_suite | INFO | Processing query: Design a REST API endpoint (URL, HTTP method, request/response JSON) for user authentication using JWT, include example request and response.
+2026-03-02 00:55:27 | llm_router.test_suite | INFO | [qid=21203be3] Starting test for query: Design a REST API endpoint (URL, HTTP method, request/response JSON) for user authentication using JWT, include example request and response.
+2026-03-02 00:55:27 | llm_router.test_suite | INFO | [qid=21203be3] Checking semantic cache
+2026-03-02 00:55:27 | llm_router.test_suite | INFO | [qid=21203be3] Cache miss
+2026-03-02 00:55:28 | llm_router.test_suite | INFO | [qid=21203be3] Classification result: A
+2026-03-02 00:55:28 | llm_router.test_suite | INFO | [qid=21203be3] Route selected: A
+2026-03-02 00:55:28 | llm_router.test_suite | INFO | [qid=21203be3] Candidate models prepared: 3
+2026-03-02 00:55:48 | llm_router.test_suite | INFO | [qid=21203be3] Model invocation done (used_model=qwen/qwen-2.5-coder-32b-instruct:free, speed=20.59s)
+2026-03-02 00:55:48 | llm_router.test_suite | INFO | [qid=21203be3] Response cached
+2026-03-02 00:55:48 | llm_router.test_suite | INFO | [qid=21203be3] Result saved (route=A, model=qwen/qwen-2.5-coder-32b-instruct:free, cache=Miss, speed=20.59s)
+2026-03-02 00:55:48 | llm_router.test_suite | INFO | [qid=21203be3] Finished test (error=False)
+2026-03-02 00:55:48 | llm_router.test_suite | INFO | Processing query: Explain the difference between a process and a thread in operating systems in 5 concise bullet points.
+2026-03-02 00:55:48 | llm_router.test_suite | INFO | [qid=90fb13f9] Starting test for query: Explain the difference between a process and a thread in operating systems in 5 concise bullet points.
+2026-03-02 00:55:48 | llm_router.test_suite | INFO | [qid=90fb13f9] Checking semantic cache
+2026-03-02 00:55:48 | llm_router.test_suite | INFO | [qid=90fb13f9] Cache miss
+2026-03-02 00:55:50 | llm_router.test_suite | INFO | [qid=90fb13f9] Classification result: M
+2026-03-02 00:55:50 | llm_router.test_suite | INFO | [qid=90fb13f9] Route selected: M
+2026-03-02 00:55:50 | llm_router.test_suite | INFO | [qid=90fb13f9] Candidate models prepared: 3
+2026-03-02 00:55:54 | llm_router.test_suite | INFO | [qid=90fb13f9] Model invocation done (used_model=openai/gpt-oss-20b:free, speed=6.04s)
+2026-03-02 00:55:54 | llm_router.test_suite | INFO | [qid=90fb13f9] Response cached
+2026-03-02 00:55:54 | llm_router.test_suite | INFO | [qid=90fb13f9] Result saved (route=M, model=openai/gpt-oss-20b:free, cache=Miss, speed=6.04s)
+2026-03-02 00:55:54 | llm_router.test_suite | INFO | [qid=90fb13f9] Finished test (error=False)
+2026-03-02 00:55:54 | llm_router.test_suite | INFO | Processing query: Summarize the causes of the American Civil War in 6 bullet points.
+2026-03-02 00:55:54 | llm_router.test_suite | INFO | [qid=a6d92d9a] Starting test for query: Summarize the causes of the American Civil War in 6 bullet points.
+2026-03-02 00:55:54 | llm_router.test_suite | INFO | [qid=a6d92d9a] Checking semantic cache
+2026-03-02 00:55:54 | llm_router.test_suite | INFO | [qid=a6d92d9a] Cache miss
+2026-03-02 00:55:55 | llm_router.test_suite | INFO | [qid=a6d92d9a] Classification result: M
+2026-03-02 00:55:55 | llm_router.test_suite | INFO | [qid=a6d92d9a] Route selected: M
+2026-03-02 00:55:55 | llm_router.test_suite | INFO | [qid=a6d92d9a] Candidate models prepared: 3
+2026-03-02 00:56:01 | llm_router.test_suite | INFO | [qid=a6d92d9a] Model invocation done (used_model=openai/gpt-oss-20b:free, speed=7.33s)
+2026-03-02 00:56:01 | llm_router.test_suite | INFO | [qid=a6d92d9a] Response cached
+2026-03-02 00:56:01 | llm_router.test_suite | INFO | [qid=a6d92d9a] Result saved (route=M, model=openai/gpt-oss-20b:free, cache=Miss, speed=7.33s)
+2026-03-02 00:56:01 | llm_router.test_suite | INFO | [qid=a6d92d9a] Finished test (error=False)
+2026-03-02 00:56:01 | llm_router.test_suite | INFO | Processing query: Refactor this Python function to improve readability and performance: def f(a): return [x for x in a if x%2==0]
+2026-03-02 00:56:01 | llm_router.test_suite | INFO | [qid=d5126053] Starting test for query: Refactor this Python function to improve readability and performance: def f(a): return [x for x in a if x%2==0]
+2026-03-02 00:56:01 | llm_router.test_suite | INFO | [qid=d5126053] Checking semantic cache
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=d5126053] Cache hit
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=d5126053] Result saved (route=cache, model=cache, cache=Hit, speed=0.10s)
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=d5126053] Finished test (error=False)
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | Processing query: Draft a formal apology email to a client for a missed deadline.
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=105d28dc] Starting test for query: Draft a formal apology email to a client for a missed deadline.
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=105d28dc] Checking semantic cache
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=105d28dc] Cache hit
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=105d28dc] Result saved (route=cache, model=cache, cache=Hit, speed=0.10s)
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=105d28dc] Finished test (error=False)
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | Processing query: Explain the difference between a process and a thread in operating systems in 5 concise bullet points.
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=7def2b4a] Starting test for query: Explain the difference between a process and a thread in operating systems in 5 concise bullet points.
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=7def2b4a] Checking semantic cache
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=7def2b4a] Cache hit
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=7def2b4a] Result saved (route=cache, model=cache, cache=Hit, speed=0.10s)
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=7def2b4a] Finished test (error=False)
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | Processing query: Create a Java class for managing a library system with books and members.
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=d71db1c4] Starting test for query: Create a Java class for managing a library system with books and members.
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=d71db1c4] Checking semantic cache
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=d71db1c4] Cache hit
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=d71db1c4] Result saved (route=cache, model=cache, cache=Hit, speed=0.10s)
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | [qid=d71db1c4] Finished test (error=False)
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | === Test Results ===
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | 
+                                                Query  Route  ...       Cost  Cache
+0   Give me a one-sentence explanation of photosyn...      S  ...  $0.000010   Miss
+1                        Who wrote the play 'Hamlet'?      S  ...  $0.000012   Miss
+2                Translate 'Thank you' into Japanese.      S  ...  $0.000042   Miss
+3   Draft a formal apology email to a client for a...      M  ...  $0.000467   Miss
+4   Give me a one-sentence explanation of photosyn...  cache  ...  $0.000000    Hit
+5   Explain quantum computing as if I am 10 years ...      M  ...  $0.000271   Miss
+6   Create a Java class for managing a library sys...      A  ...  $0.000522   Miss
+7                        Who wrote the play 'Hamlet'?  cache  ...  $0.000000    Hit
+8   Refactor this Python function to improve reada...      A  ...  $0.000656   Miss
+9   Design a REST API endpoint (URL, HTTP method, ...      A  ...  $0.000692   Miss
+10  Explain the difference between a process and a...      M  ...  $0.000075   Miss
+11  Summarize the causes of the American Civil War...      M  ...  $0.000143   Miss
+12  Refactor this Python function to improve reada...  cache  ...  $0.000000    Hit
+13  Draft a formal apology email to a client for a...  cache  ...  $0.000000    Hit
+14  Explain the difference between a process and a...  cache  ...  $0.000000    Hit
+15  Create a Java class for managing a library sys...  cache  ...  $0.000000    Hit
+
+[16 rows x 6 columns]
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | Results have been saved to: test_results.xlsx
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | === Summary Statistics ===
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | Total Queries: 16
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | Cache Hits: 6
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | Average Speed: 7.84 seconds
+2026-03-02 00:56:02 | llm_router.test_suite | INFO | Total Cost: $0.002890
+2026-03-02 00:57:49 | llm_router.test_suite | INFO | Test suite logger initialized

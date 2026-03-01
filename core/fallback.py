@@ -1,8 +1,11 @@
 import os
 import time
 import requests
+import logging
 from dotenv import load_dotenv
 from google import genai
+
+logger = logging.getLogger("llm_router.fallback")
 
 # Load env vars
 load_dotenv()
@@ -23,18 +26,27 @@ MODEL_KEY_MAP = {
 
 # Price per 1M tokens
 PRICES = {
-    "qwen-2.5-72b-instruct": {"input": 0.7, "output": 0.7},
-    "mistral-7b-instruct": {"input": 0.25, "output": 0.25},
-    "llama-3.3-8b-instruct": {"input": 0.15, "output": 0.15},
-    "qwen/qwen2.5-vl-32b-instruct:free": {"input": 0.15, "output": 0.15},
-    "openai/gpt-oss-20b:free": {"input": 0.15, "output": 0.15},
-    "mistralai/devstral-small-2505:free": {"input": 0.15, "output": 0.15},
-    "qwen/qwq-32b:free": {"input": 0.15, "output": 0.15},
-    "qwen/qwen-2.5-coder-32b-instruct:free": {"input": 0.15, "output": 0.15},
-    "deepseek/deepseek-r1-distill-llama-70b:free": {"input": 0.15, "output": 0.15},
-    "meta-llama/llama-3.3-70b-instruct:free": {"input": 0.15, "output": 0.15},
+
+    # prices for tier1
+    "qwen/qwen-2.5-72b-instruct:free": {"input": 0.15, "output": 0.20},
+    "qwen/qwen-2.5-coder-32b-instruct:free": {"input": 0.15, "output": 0.20},
+    "meta-llama/llama-3.3-8b-instruct:free": {"input": 0.15, "output": 0.20},
+
+    # prices for tier2
+    "openai/gpt-oss-20b:free": {"input": 0.35, "output": 0.50},
+    "mistralai/devstral-small-2505:free": {"input": 0.35, "output": 0.50},
+    "mistralai/mistral-7b-instruct:free": {"input": 0.35, "output": 0.50},
+    
+    # prices for tier3
+    "qwen/qwen-2.5-coder-32b-instruct:free": {"input": 0.70, "output": 1.00},
+    "deepseek/deepseek-r1-distill-llama-70b:free": {"input": 0.70, "output": 1.00},
+    "meta-llama/llama-3.3-70b-instruct:free": {"input": 0.70, "output": 1.00},
 }
 
+def estimate_tokens(text: str) -> int:
+    """Rough estimate of token count based on word count."""
+    words = text.split()
+    return int(len(words) * 1.3)  # Assume 1.3 tokens per word on average
 
 def calculate_cost(model_name: str, input_tokens: int, output_tokens: int) -> float:
     """Calc cost based on token usage"""
@@ -55,23 +67,22 @@ class FallbackChatGradientAI:
         last_exception = None
 
         for model_name in self.models:
-            print(f"Attempting request with model: {model_name}")
+            logger.info("Attempting request with model: %s", model_name)
             model_name=model_name
             if isinstance(model_name, (list, tuple)) and len(model_name) > 1:
-                print(f"[DEBUG] Selected model tuple: {model_name}")
+                logger.debug("Selected model tuple: %s", model_name)
                 model_name = model_name[1]  # Use the model identifier
-            print("model_name",model_name)
+            logger.debug("Resolved model_name=%s", model_name)
             api_key_name = MODEL_KEY_MAP.get(model_name)
-            print("api_key_name",api_key_name)
+            logger.debug("Resolved api_key_name=%s", api_key_name)
             api_key = os.getenv(api_key_name)
-            print("api",api_key_name, api_key)
 
             if not api_key:
-                print(f"[WARNING] API key for model '{model_name}' not found. Skipping this model.")
+                logger.warning("API key for model '%s' not found. Skipping this model.", model_name)
                 continue  # Skip if no key
             
             client = genai.Client(api_key=api_key)
-            print("client Done")
+            logger.debug("Client initialized for model=%s", model_name)
             
 
             
@@ -95,7 +106,7 @@ class FallbackChatGradientAI:
                     
                     input_tokens = usage.prompt_token_count or 0
 
-                    output_tokens = usage.candidates_token_count or 0
+                    output_tokens = estimate_tokens(result)
 
                     cost = calculate_cost(model_name, input_tokens, output_tokens)
                     end_time = time.time()
@@ -113,5 +124,6 @@ class FallbackChatGradientAI:
 
                 except Exception as e:
                     last_exception = e
+                    logger.exception("Model %s failed on attempt %s/%s", model_name, attempt + 1, max_retries)
 
         raise Exception(f"All models failed. Last error: {str(last_exception)}")

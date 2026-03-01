@@ -5,8 +5,11 @@ Provides a unified interface to call open-source LLMs via HuggingFace Inference 
 
 import os
 import json
+import logging
 from pathlib import Path
 from typing import Optional, Dict, Any
+
+logger = logging.getLogger("llm_router.llm_utils")
 
 # Load .env file automatically
 try:
@@ -15,11 +18,11 @@ try:
     env_path = Path(__file__).parent.parent / ".env"
     if env_path.exists():
         load_dotenv(env_path)
-        print(f"[LLM] Loaded .env from: {env_path}")
+        logger.info("Loaded .env from: %s", env_path)
     else:
-        print(f"[LLM] Warning: .env not found at {env_path}")
+        logger.warning(".env not found at %s", env_path)
 except ImportError:
-    print("[LLM] Warning: python-dotenv not installed")
+    logger.warning("python-dotenv not installed")
     pass  # python-dotenv not installed, rely on system env vars
 
 # Try to import openai (for HuggingFace router)
@@ -66,11 +69,11 @@ class LLMClient:
         if "gemma" in self.model or "gemini" in self.model:
             self.provider = "google"
             self.api_key = os.environ.get("New_GOOGLE_API_KEY")
-            print(f"[LLM] Provider: Google, API Key found: {self.api_key}")
+            logger.info("Provider: Google, API key configured=%s", bool(self.api_key))
         else:
             self.provider = "hf"
             self.api_key = api_key or os.environ.get("HF_API_KEY") or os.environ.get("HUGGINGFACE_API_KEY")
-            print(f"[LLM] Provider: HuggingFace, API Key found: {bool(self.api_key)}")
+            logger.info("Provider: HuggingFace, API key configured=%s", bool(self.api_key))
         
         # Initialize Clients
         self._hf_client = None
@@ -81,14 +84,14 @@ class LLMClient:
                 base_url="https://router.huggingface.co/v1",
                 api_key=self.api_key
             )
-            print("[LLM] HuggingFace client initialized")
+            logger.info("HuggingFace client initialized")
             
         elif self.provider == "google" and HAS_GOOGLE and self.api_key:
             # Temporary: Use hardcoded key until .env is updated with non-leaked key
             self._google_client = genai.Client(api_key=self.api_key)
-            print("[LLM] Google client initialized")
+            logger.info("Google client initialized")
         else:
-            print(f"[LLM] Warning: Client not initialized. HAS_GOOGLE={HAS_GOOGLE}, has_key={bool(self.api_key)}")
+            logger.warning("Client not initialized. HAS_GOOGLE=%s has_key=%s", HAS_GOOGLE, bool(self.api_key))
         
     def generate(
         self,
@@ -108,7 +111,7 @@ class LLMClient:
             if res:
                 return res
         except Exception as e:
-            print(f"[LLM] API call failed ({self.provider}): {e}")
+            logger.exception("API call failed (%s): %s", self.provider, e)
         
         if fallback_template:
             return fallback_template
@@ -135,7 +138,7 @@ class LLMClient:
                 contents=prompt,
                 #config={'temperature': temperature, 'max_output_tokens': max_tokens}
             )
-            print("response.text",response.text)
+            logger.debug("Google response received")
             return response.text
         return None
 
@@ -180,42 +183,36 @@ def test_api():
     Test function to verify the LLM API is working.
     Run: python llm_utils.py
     """
-    print("=" * 50)
-    print("LLM API Test")
-    print("=" * 50)
+    logger.info("%s", "=" * 50)
+    logger.info("LLM API Test")
+    logger.info("%s", "=" * 50)
     
     client = LLMClient()
     
     # Check API key
     if client.api_key:
-        print(f"[OK] API Key: {client.api_key[:10]}...{client.api_key[-4:]}")
+        logger.info("API key configured=True")
     else:
-        print("[X] API Key: NOT SET")
-        print("    Set HF_API_KEY in .env file or environment variable")
+        logger.error("API key not set. Set HF_API_KEY in .env file or environment variable")
         return False
     
-    print(f"[OK] Model: {client.model}")
-    print(f"[OK] HuggingFace Hub: {'Available' if HAS_OPENAI else 'Not installed (pip install openai)'}")
-    print()
+    logger.info("Model: %s", client.model)
+    logger.info("HuggingFace Hub: %s", "Available" if HAS_OPENAI else "Not installed (pip install openai)")
     
     # Test API call
-    print("Testing API call...")
+    logger.info("Testing API call...")
     test_prompt = "Say hello in one word"
     
     try:
         result = client.generate(test_prompt, max_tokens=50, temperature=0.5)
         if result:
-            print("[OK] API Response received!")
-            print("-" * 40)
-            print(result)
-            print("-" * 40)
+            logger.info("API response received")
             return True
         else:
-            print("[X] API returned empty response")
-            print("    Make sure the required library is installed")
+            logger.error("API returned empty response")
             return False
     except Exception as e:
-        print(f"[X] API Error: {e}")
+        logger.exception("API error: %s", e)
         return False
 
 

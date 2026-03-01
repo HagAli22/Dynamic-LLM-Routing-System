@@ -1,13 +1,12 @@
 import logging
+from uuid import uuid4
 from typing import TypedDict, Optional, Literal
 from langgraph.graph import StateGraph, END
 
 MAX_RETRIES_PER_MODEL = 3
 WORKFLOW_RECURSION_LIMIT = 10
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("llm_router.router")
 
 
 class RouterState(TypedDict):
@@ -15,6 +14,7 @@ class RouterState(TypedDict):
 
 
     query: str
+    query_id: str
 
 
     classification: Optional[Literal["S", "M", "A"]]
@@ -70,31 +70,31 @@ class Router:
                     response_text = str(response)
 
                 self.cache.set(query, response_text)
-                logger.debug(f"Stored response in semantic cache for query: {query[:50]}...")
+                logger.debug("[qid=%s] Stored response in semantic cache", state.get("query_id"))
             return state
         except Exception as e:
-            logger.warning(f"Failed to store in cache: {str(e)}")
+            logger.exception("[qid=%s] Failed to store in cache: %s", state.get("query_id"), str(e))
             return state
 
     def check_cache(self, state: RouterState) -> RouterState:
         """Check if the query already exists in the semantic cache."""
-        logger.debug("Checking cache for query")
-        print("DEBUG: Cache check state:")
+        logger.debug("[qid=%s] Checking semantic cache", state.get("query_id"))
         response = self.cache.get(state["query"])
         if response is not None:
+            logger.info("[qid=%s] Cache hit", state.get("query_id"))
             return {
                 **state,
                 "cache_hit": True,
                 "cached_response": response,
                 "llm_response": response,
             }
+        logger.info("[qid=%s] Cache miss", state.get("query_id"))
         return {**state, "cache_hit": False}
 
 
     def classify_query(self, state: RouterState) -> RouterState:
         """Classify the query into Small (S), Medium (M), or Advanced (A)."""
-        logger.debug("Classifying query")
-        print("DEBUG: Classification state:")
+        logger.debug("[qid=%s] Classifying query", state.get("query_id"))
         try:
             if not state.get("query"):
                 state["error"] = "No query provided for classification"
@@ -105,23 +105,22 @@ class Router:
             
 
             if classification not in ["S", "M", "A"]:
-                print(f"[WARNING] Invalid classification result: {classification}")
+                logger.warning("[qid=%s] Invalid classification result: %s", state.get("query_id"), classification)
                 state["error"] = f"Invalid classification: {classification}"
                 return state
 
-            logger.debug(f"Query classified as: {classification}")
+            logger.info("[qid=%s] Query classified as: %s", state.get("query_id"), classification)
             return {**state, "classification": classification, "error": None}
 
         except Exception as e:
             state["error"] = f"Error in classify_query: {str(e)}"
-            logger.error(state["error"])
+            logger.exception("[qid=%s] %s", state.get("query_id"), state["error"])
             return state
 
 
     def select_model(self, state: RouterState) -> RouterState:
         """Select a model from the tier based on classification and retry count."""
-        logger.debug("Selecting model")
-        print("DEBUG: Model selection state:")
+        logger.debug("[qid=%s] Selecting model", state.get("query_id"))
         state = dict(state)
 
         try:
@@ -131,7 +130,7 @@ class Router:
                 return state
 
             tier_key = self._map_classification_to_tier(tier)
-            print(f"[DEBUG] Mapped classification {tier} to tier key {tier_key}")
+            logger.debug("[qid=%s] Mapped classification %s to %s", state.get("query_id"), tier, tier_key)
             models = self.models_config.get(tier_key, [])
 
             if not models:
@@ -161,14 +160,18 @@ class Router:
             )
 
             logger.info(
-                f"Selected model: {selected_model} for tier {tier_key} (attempt {retry_count + 1}/{max_retries})"
+                "[qid=%s] Selected model=%s tier=%s attempt=%s/%s",
+                state.get("query_id"),
+                selected_model,
+                tier_key,
+                retry_count + 1,
+                max_retries,
             )
-            print(f"[INFO] Selected model: {selected_model} for tier {tier_key} (attempt {retry_count + 1}/{max_retries})")
             return state
 
         except Exception as e:
             state["error"] = f"Error in select_model: {str(e)}"
-            logger.error(state["error"])
+            logger.exception("[qid=%s] %s", state.get("query_id"), state["error"])
             return state
 
     def _map_classification_to_tier(self, classification: str) -> str:
@@ -179,14 +182,13 @@ class Router:
 
     def call_llm(self, state: RouterState) -> RouterState:
         """Call the LLM client with the selected model."""
-        logger.debug("Calling LLM")
-        print("DEBUG: LLM call state:")
+        logger.debug("[qid=%s] Calling LLM", state.get("query_id"))
         if not state.get("selected_model"):
             return {**state, "error": "No model selected for LLM call"}
 
         try:
             model_identifier = state["selected_model"]
-            print(f"[DEBUG] Using model identifier: {model_identifier}")
+            logger.debug("[qid=%s] Using model identifier: %s", state.get("query_id"), model_identifier)
             if isinstance(model_identifier, (list, tuple)) and len(model_identifier) > 1:
                 model_identifier = model_identifier[1]
 
@@ -197,7 +199,7 @@ class Router:
                     state["model_tier"],
                 )
             else:
-                logger.warning("No LLM client provided, using mock response")
+                logger.warning("[qid=%s] No LLM client provided, using mock response", state.get("query_id"))
                 response = f"Response for: {state['query']} from {model_identifier}"
 
             self.cache.set(state["query"], response)
@@ -205,7 +207,7 @@ class Router:
             return {**state, "llm_response": response, "used_model": state["selected_model"]}
 
         except Exception as e:
-            logger.error(f"LLM call failed: {str(e)}")
+            logger.exception("[qid=%s] LLM call failed: %s", state.get("query_id"), str(e))
             return {**state, "error": str(e)}
 
 
@@ -219,7 +221,7 @@ class Router:
 
     def handle_llm_response(self, state: RouterState) -> str:
         """Decide next step after LLM response."""
-        print("DEBUG: LLM response handler state:")
+        logger.debug("[qid=%s] Handling LLM response", state.get("query_id"))
         if state.get("llm_response"):
             return "success"
 
@@ -281,8 +283,11 @@ class Router:
 
     def route(self, query: str) -> RouterState:
         """Run a query through the workflow and return the final state."""
+        query_id = uuid4().hex[:8]
+        logger.info("[qid=%s] Starting route", query_id)
         initial_state = RouterState(
             query=query,
+            query_id=query_id,
             classification=None,
             model_tier=None,
             selected_model=None,
@@ -294,4 +299,5 @@ class Router:
             retry_count=0,
         )
         result = self.workflow.invoke(initial_state)
+        logger.info("[qid=%s] Finished route (error=%s, cache_hit=%s)", query_id, bool(result.get("error")), result.get("cache_hit"))
         return result

@@ -3,6 +3,7 @@ Streamlit App for Dynamic LLM Routing using LangGraph
 """
 import os
 import sys
+import logging
 import streamlit as st
 import time
 import pandas as pd
@@ -14,9 +15,11 @@ sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core import SemanticCache
 from core import Router
 from config import *
+from config.logger_config import setup_logger
 
 # Model configuration
 MODELS_CONFIG=MODELS_CONFIG
+logger = logging.getLogger("llm_router.streamlit")
 
 
 class SimpleCache:
@@ -92,16 +95,9 @@ def process_single_query(query: str, router: Router):
         }
 
 
-def calculate_accuracy(query, response):
-    """Word overlap accuracy"""
-    if not query or not response:
-        return 0.0
-    q_words = set(str(query).lower().split())
-    r_words = set(str(response).lower().split())
-    return len(q_words & r_words) / len(q_words) if q_words else 0.0
-
-
 def main():
+    setup_logger("llm_router")
+    logger.info("Starting Streamlit application")
     st.set_page_config(page_title="LangGraph LLM Router", page_icon="🚀", layout="wide")
     st.title("🚀 Dynamic LLM Routing with LangGraph")
 
@@ -129,7 +125,6 @@ def main():
                 col1.metric("⚡ Speed", f"{result['speed']:.2f}s")
                 col2.metric("💾 Cache", "Hit" if result["cache_hit"] else "Miss")
                 col3.metric("🎯 Classification", result["classification"])
-                col4.metric("📊 Accuracy", f"{calculate_accuracy(query, result['response'])*100:.1f}%")
 
                 # Response
                 st.subheader("💬 Response")
@@ -176,7 +171,6 @@ def main():
                     "Model_Tier": result.get("model_tier", "Unknown"),
                     "Used_Model": result.get("used_model", "Unknown"),
                     "Speed_s": round(result.get("speed", 0), 2),
-                    "Accuracy": round(calculate_accuracy(query, result.get("response", ""))*100, 1),
                     "Cache": "Hit" if result.get("cache_hit") else "Miss",
                     "Error": result.get("error", "")
                 })

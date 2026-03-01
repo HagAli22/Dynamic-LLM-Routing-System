@@ -57,6 +57,7 @@ class LLMClient:
 
         # Call the model
         response = fallback.invoke(query)
+        
 
         # Return clean response
         return response[0] if isinstance(response, (list, tuple)) else response
